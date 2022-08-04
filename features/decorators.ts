@@ -1,3 +1,8 @@
+const classDecorator = (constructor: typeof Boat) => {
+	console.log(constructor);
+};
+
+@classDecorator
 class Boat {
 	@propsAndAccessorDecorator
 	color: string = 'red';
@@ -8,9 +13,20 @@ class Boat {
 	}
 
 	@errorLogger('something went wrong!')
-	pilot(): void {
-		throw new Error();
+	pilot(
+		@parameterDecorator speed: string,
+		@parameterDecorator generateWake: boolean,
+	): void {
+		if (speed === 'fast') {
+			console.log('swish');
+		} else {
+			console.log('nothing');
+		}
 	}
+}
+
+function parameterDecorator(target: any, key: string, index: number) {
+	console.log(key, index);
 }
 
 function propsAndAccessorDecorator(target: any, key: string) {
@@ -30,5 +46,3 @@ function errorLogger(message: string) {
 		};
 	};
 }
-
-new Boat().pilot();
