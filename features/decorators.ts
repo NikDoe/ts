@@ -5,25 +5,23 @@ class Boat {
 		return `this boat color is ${this.color}`;
 	}
 
-	@testDecorator
+	@errorLogger('something went wrong!')
 	pilot(): void {
 		throw new Error();
 	}
 }
 
-function testDecorator(
-	target: any,
-	key: string,
-	desc: PropertyDescriptor,
-): void {
-	const method = desc.value;
+function errorLogger(message: string) {
+	return function (target: any, key: string, desc: PropertyDescriptor): void {
+		const method = desc.value;
 
-	desc.value = () => {
-		try {
-			method();
-		} catch (e) {
-			console.log('Ooops boat was sunk');
-		}
+		desc.value = () => {
+			try {
+				method();
+			} catch (e) {
+				console.log(message);
+			}
+		};
 	};
 }
 
