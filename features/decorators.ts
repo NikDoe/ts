@@ -1,6 +1,8 @@
 class Boat {
+	@propsAndAccessorDecorator
 	color: string = 'red';
 
+	@propsAndAccessorDecorator
 	get formattedColor(): string {
 		return `this boat color is ${this.color}`;
 	}
@@ -9,6 +11,10 @@ class Boat {
 	pilot(): void {
 		throw new Error();
 	}
+}
+
+function propsAndAccessorDecorator(target: any, key: string) {
+	console.log(key);
 }
 
 function errorLogger(message: string) {
