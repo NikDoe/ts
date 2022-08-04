@@ -7,11 +7,24 @@ class Boat {
 
 	@testDecorator
 	pilot(): void {
-		console.log('wish');
+		throw new Error();
 	}
 }
 
-function testDecorator(target: any, key: string): void {
-	console.log('Target --- ', target);
-	console.log('Key---', key);
+function testDecorator(
+	target: any,
+	key: string,
+	desc: PropertyDescriptor,
+): void {
+	const method = desc.value;
+
+	desc.value = () => {
+		try {
+			method();
+		} catch (e) {
+			console.log('Ooops boat was sunk');
+		}
+	};
 }
+
+new Boat().pilot();
